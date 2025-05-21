@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Rise of Decentralized AI Agents: An Interactive Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Visualization & Content Choices:
+        - Agent Definitions (AI vs Agentic vs DeAI): HTML/CSS diagram. Goal: Inform. Method: Structured HTML.
+        - DePIN Compute Projects, Confidential Computing, Blockchain Protocols, etc. (Pillars Section): Cards are now expandable to show more detailed text. Illustrative Bar Chart for DePIN focus areas. Goal: Inform, Compare. Method: Chart.js, Expandable HTML/JS.
+        - Open Agents Alliance (OAA): Key members & contributions in a structured list/cards, potentially expandable. Goal: Inform.
+        - Interaction Protocols: HTML/CSS diagram for layers. Key protocols in expandable cards. Goal: Organize, Inform.
+        - Dev Frameworks: Cards for each framework, expandable for more detail. Illustrative Pie Chart for conceptual usage. Goal: Compare, Inform. Method: Chart.js, Expandable HTML/JS.
+        - Other Projects (IQ AI, Silverstream, Datrics): Cards expandable for more detail. Goal: Inform.
+        - All visualizations use Chart.js (Canvas) or HTML/CSS. NO SVG/Mermaid. Justification: Clarity, adherence to constraints, visual appeal, enhanced interactivity for depth. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FEFBF6; 
+            color: #3D3B30; 
+        }
+        .header-title { color: #073B4C; }
+        .section-title { color: #073B4C; border-bottom: 2px solid #FF6B6B; padding-bottom: 0.5rem; }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
+        .card-title { color: #118AB2; }
+        .card-title-interactive { cursor: pointer; }
+        .nav-link { color: #073B4C; transition: color 0.3s ease, border-bottom-color 0.3s ease; border-bottom: 2px solid transparent; }
+        .nav-link:hover, .nav-link.active { color: #FF6B6B; border-bottom-color: #FF6B6B; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .tag { background-color: #E0F2F7; color: #118AB2; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; margin-right: 0.5rem; margin-bottom: 0.5rem; display: inline-block; }
+        .html-diagram { border: 1px solid #FFD166; background-color: #FFF9EB; padding: 1rem; border-radius: 0.5rem; }
+        .html-diagram-box { background-color: #FFFFFF; border: 1px solid #118AB2; padding: 0.75rem; border-radius: 0.375rem; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .html-diagram-arrow { font-size: 1.5rem; color: #073B4C; margin: 0.5rem 0; text-align: center; }
+        .stat-number { font-size: 2.5rem; font-weight: 700; line-height: 1; color: #06D6A0; }
+        .accent-coral { color: #FF6B6B; }
+        .accent-yellow { color: #FFD166; }
+        .accent-green { color: #06D6A0; }
+        .accent-blue { color: #118AB2; }
+        .accent-navy { color: #073B4C; }
+        .expand-button {
+            background-color: #E0F2F7; color: #118AB2;
+            padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.8rem;
+            cursor: pointer; transition: background-color 0.2s;
+            display: inline-block; margin-top: 0.5rem;
+        }
+        .expand-button:hover { background-color: #B3E5FC; }
+        .detailed-content {
+            display: none;
+            margin-top: 0.75rem; padding-top: 0.75rem;
+            border-top: 1px solid #FFD166; /* Light yellow border */
+            font-size: 0.9rem; line-height: 1.6; color: #4A5568; /* Slightly lighter text for details */
+        }
+        .detailed-content.open { display: block; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav id="main-nav" class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl header-title">DeAI Agents Infographic</span>
+                </div>
+                <div class="hidden md:block">
+                    <div id="nav-links-desktop" class="ml-10 flex items-baseline space-x-3">
+                        <a href="#vision" class="nav-link px-2 py-2 rounded-md text-sm font-medium">Vision</a>
+                        <a href="#pillars" class="nav-link px-2 py-2 rounded-md text-sm font-medium">Pillars</a>
+                        <a href="#oaa" class="nav-link px-2 py-2 rounded-md text-sm font-medium">OAA</a>
+                        <a href="#protocols" class="nav-link px-2 py-2 rounded-md text-sm font-medium">Protocols</a>
+                        <a href="#frameworks" class="nav-link px-2 py-2 rounded-md text-sm font-medium">Frameworks</a>
+                        <a href="#projects" class="nav-link px-2 py-2 rounded-md text-sm font-medium">Projects</a>
+                        <a href="#challenges" class="nav-link px-2 py-2 rounded-md text-sm font-medium">Challenges</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-button" class="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-coral-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div id="nav-links-mobile" class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#vision" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Vision & Concepts</a>
+                <a href="#pillars" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Foundational Pillars</a>
+                <a href="#oaa" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Open Agents Alliance</a>
+                <a href="#protocols" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Interaction Protocols</a>
+                <a href="#frameworks" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Dev Frameworks</a>
+                <a href="#projects" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Key Projects</a>
+                <a href="#challenges" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Challenges & Future</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center py-8 md:py-12">
+            <h1 class="text-4xl md:text-5xl font-bold header-title mb-4">The Rise of Decentralized AI Agents</h1>
+            <p class="text-xl md:text-2xl accent-coral">Architecture, Ecosystem, and Future Trajectories</p>
+            <p class="mt-4 max-w-3xl mx-auto text-lg">An interactive infographic exploring the dynamic landscape of DeAI agents, their enabling technologies, key players, and the path to an open, user-owned agentic web.</p>
+        </header>
+
+        <section id="vision" class="py-8 md:py-12 scroll-mt-16">
+            <h2 class="text-3xl font-bold section-title mb-8 text-center">1. Defining the Agentic Shift</h2>
+            <p class="text-lg text-gray-700 mb-10 max-w-3xl mx-auto text-center">AI is evolving from task-specific models to autonomous "Agentic AI" systems. Integrating Web3 principles creates "Decentralized AI (DeAI) Agents" aiming for transparency, security, and user ownership.</p>
+            <div class="html-diagram">
+                <h3 class="text-xl font-semibold card-title mb-4 text-center">Conceptual Taxonomy: AI Agents to DeAI Agents</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+                    <div class="html-diagram-box">
+                        <h4 class="font-semibold text-lg accent-yellow card-title-interactive" data-target="detail-traditional-ai">Traditional AI Agents <span class="expand-button-text text-xs">[+]</span></h4>
+                        <p class="text-sm">Modular, LLM/LIM-driven, narrow task automation (e.g., chatbots).</p>
+                        <div id="detail-traditional-ai" class="detailed-content text-left">
+                            <p>Traditional AI agents are often designed as single-entity systems performing goal-directed tasks by invoking external tools, applying sequential reasoning, and integrating real-time information. They represent an advancement from generative AI through enhanced tool integration and prompt engineering. Examples include customer support bots, schedulers, and data summarizers.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center"><div class="html-diagram-arrow md:hidden">↓</div><div class="html-diagram-arrow hidden md:block text-4xl mt-4">→</div></div>
+                    <div class="html-diagram-box">
+                        <h4 class="font-semibold text-lg accent-green card-title-interactive" data-target="detail-agentic-ai">Agentic AI Systems <span class="expand-button-text text-xs">[+]</span></h4>
+                        <p class="text-sm">Multi-agent collaboration, dynamic task decomposition, persistent memory, orchestrated autonomy.</p>
+                         <div id="detail-agentic-ai" class="detailed-content text-left">
+                            <p>Agentic AI systems involve multiple, specialized agents coordinating and dynamically allocating sub-tasks. They feature persistent memory and a higher degree of orchestrated autonomy, suitable for complex applications like research automation and robotic coordination. Frameworks like CrewAI and AutoGen facilitate their development.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="html-diagram-arrow text-center mt-4">↓ (Incorporates Web3 Principles)</div>
+                <div class="html-diagram-box mt-4 max-w-md mx-auto">
+                    <h4 class="font-semibold text-lg accent-blue card-title-interactive" data-target="detail-deai-agents">Decentralized AI (DeAI) Agents <span class="expand-button-text text-xs">[+]</span></h4>
+                    <p class="text-sm">Agentic AI + Blockchain, DIDs, VCs, Tokenization. Aims for transparent, secure, user-owned, censorship-resistant agents in an "agent economy."</p>
+                    <div id="detail-deai-agents" class="detailed-content text-left">
+                        <p>DeAI agents integrate Web3 technologies like blockchain for secure identity (DIDs/VCs), trustless transactions via smart contracts, user data ownership, decentralized governance (DAOs), and economic participation through tokenization. The vision is an "internet of agents" operating with enhanced transparency and security.</p>
+                    </div>
+                </div>
+                <p class="mt-4 text-sm text-center text-gray-600">This evolution signifies a move towards more autonomous, collaborative, and user-centric AI systems. Click titles to expand.</p>
+            </div>
+        </section>
+
+        <section id="pillars" class="py-8 md:py-12 scroll-mt-16">
+            <h2 class="text-3xl font-bold section-title mb-8 text-center">2. Foundational Pillars for DeAI Agents</h2>
+            <p class="text-lg text-gray-700 mb-10 max-w-3xl mx-auto text-center">A robust DeAI agent ecosystem relies on decentralized compute, confidential computing, decentralized storage, verifiable identity, blockchain protocols, and agent-native payment systems. Click on card titles to learn more.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-coral" data-target="detail-depin">DePIN for AI Compute <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm mb-1">Decentralized networks offering scalable, cost-effective GPU resources.</p>
+                    <span class="tag">Aethir</span><span class="tag">Akash Network</span><span class="tag">Exabits</span><span class="tag">Hyperbolic</span>
+                    <div id="detail-depin" class="detailed-content">
+                        <p>DePIN projects like Aethir (large-scale H100 GPU network), Akash Network (reverse auction for compute), Exabits (tokenized GPU assets), and Hyperbolic (autonomous resource management by agents) provide alternatives to centralized cloud for AI's heavy compute needs, aiming for lower costs, resiliency, and censorship resistance.</p>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-yellow" data-target="detail-confidential">Confidential Computing <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm mb-1">TEEs, FHE, ZKPs ensuring privacy and integrity of agent operations.</p>
+                    <span class="tag">Phala Network</span><span class="tag">Oasis Network</span><span class="tag">iExec</span><span class="tag">Javelin (FHE)</span>
+                     <div id="detail-confidential" class="detailed-content">
+                        <p>Technologies like Trusted Execution Environments (TEEs) from Phala, Oasis, and iExec create isolated enclaves for secure computation. Fully Homomorphic Encryption (FHE), used by Javelin, allows computation on encrypted data. Zero-Knowledge Proofs (ZKPs) enable verification without revealing underlying data. These are vital for agent privacy and data integrity.</p>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-green" data-target="detail-storage">Decentralized Storage <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm mb-1">Verifiable, scalable, and resilient data management for agents.</p>
+                    <span class="tag">Filecoin</span><span class="tag">Storacha AI</span>
+                    <div id="detail-storage" class="detailed-content">
+                        <p>Filecoin offers data verifiability, petabyte-scale capacity, immutability via Proof-of-Spacetime, and resiliency through distributed storage. This enables on-chain AI agents to establish cryptographic proof of their intelligence. Storacha AI is building an AI-native decentralized storage layer on Filecoin.</p>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-blue" data-target="detail-identity">Agent Identity (DIDs/VCs) <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm mb-1">Self-sovereign identity for secure and accountable interactions.</p>
+                    <span class="tag">cheqd</span><span class="tag">Indicio.tech</span><span class="tag">ArcBlock</span><span class="tag">SingularityNET/Privado ID</span>
+                     <div id="detail-identity" class="detailed-content">
+                        <p>Decentralized Identifiers (DIDs) provide unique, self-sovereign identities for agents. Verifiable Credentials (VCs) allow agents to prove attributes and permissions. Projects like cheqd, Indicio, ArcBlock, and SingularityNET (with Privado ID) are building solutions for robust agent identity, crucial for trust and secure interactions.</p>
+                    </div>
+                </div>
+                <div class="card p-6 md:col-span-1 lg:col-span-2">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-navy" data-target="detail-blockchain-protocols">Blockchain Protocols for Agent Economy <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm mb-1">On-chain interaction, tokenization, and value exchange.</p>
+                    <span class="tag">NEAR Protocol</span><span class="tag">Fetch.ai (ASI)</span><span class="tag">Autonolas (OLAS)</span><span class="tag">Ocean Protocol (ASI)</span><span class="tag">SingularityNET (ASI)</span><span class="tag">Theoriq Protocol</span>
+                    <div id="detail-blockchain-protocols" class="detailed-content">
+                        <p>NEAR Protocol (AITP, Intents, Chain Signatures), Fetch.ai (Agentverse), Autonolas (Olas Stack, Mech Marketplace), Ocean Protocol (Compute-to-Data), SingularityNET (AI Marketplace), and Theoriq (AgentFI) are key protocols. They facilitate on-chain agent interactions, tokenization of services, and creation of decentralized agent marketplaces, forming the backbone of an "agent economy."</p>
+                    </div>
+                </div>
+                 <div class="card p-6 md:col-span-2 lg:col-span-3">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-coral" data-target="detail-payments">AI Agent Payment & Monetization <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm mb-1">Systems for agents to pay for services and earn revenue.</p>
+                    <span class="tag">Tokenization (Virtuals, IQ ATP, Frax AIVM)</span>
+                    <span class="tag">Payment Protocols (NEAR AITP, Nevermined, Coinbase X402, Tether WDK)</span>
+                    <span class="tag">TradFi Adaptations (Stripe, PayPal)</span>
+                    <span class="tag">AI-Native FIs (Catena Labs, AIsa)</span>
+                    <div id="detail-payments" class="detailed-content">
+                        <p>Agent monetization involves tokenizing agent capabilities (Virtuals, IQ ATP, Frax AIVM) and dedicated payment protocols like NEAR AITP, Nevermined, Coinbase X402 (HTTP 402 for stablecoin micropayments), and Tether WDK. Traditional finance (Stripe, PayPal) offers agent toolkits. AI-native financial institutions like Catena Labs and AIsa are emerging to provide specialized payment infrastructure for the agent economy, focusing on micropayments and controlled spending.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card p-6 mt-8">
+                <h3 class="text-xl font-semibold card-title mb-4 text-center accent-yellow">Illustrative Focus of DePIN Compute Projects</h3>
+                <p class="text-center mb-4 text-sm">Conceptual comparison of primary value propositions.</p>
+                <div class="chart-container mx-auto"><canvas id="depinFocusChart"></canvas></div>
+                <p class="mt-4 text-sm text-center">DePINs like Aethir (GPU supply), Akash (cost-efficiency), Exabits (tokenized compute), and Hyperbolic (autonomous agent resource management) are vital for scalable AI.</p>
+            </div>
+        </section>
+
+        <section id="oaa" class="py-8 md:py-12 scroll-mt-16">
+            <h2 class="text-3xl font-bold section-title mb-8 text-center">3. The Open Agents Alliance (OAA)</h2>
+            <p class="text-lg text-gray-700 mb-6 max-w-3xl mx-auto text-center">Launched by NEAR AI and partners, the OAA aims to deliver open-source, secure, economical, and fair AI services, prioritizing user privacy and economic inclusivity. Click title to learn more about its mission and members.</p>
+            <div class="card p-6">
+                <h3 class="text-2xl font-semibold card-title card-title-interactive mb-4 text-center accent-green" data-target="detail-oaa">OAA: Key Members & Contributions <span class="expand-button-text text-xs">[+]</span></h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+                    <div class="p-3 bg-gray-50 rounded-md"><strong>NEAR AI:</strong> User-owned AI, AITP, Intents, Chain Signatures.</div>
+                    <div class="p-3 bg-gray-50 rounded-md"><strong>Coinbase:</strong> Onramps, AgentKit (agent wallets).</div>
+                    <div class="p-3 bg-gray-50 rounded-md"><strong>Phala Network:</strong> Confidential computing (TEEs).</div>
+                    <div class="p-3 bg-gray-50 rounded-md"><strong>Aethir:</strong> Decentralized GPU cloud infrastructure.</div>
+                    <div class="p-3 bg-gray-50 rounded-md"><strong>Akash Network:</strong> Decentralized cloud marketplace.</div>
+                    <div class="p-3 bg-gray-50 rounded-md"><strong>Hyperbolic:</strong> Decentralized GPU resources, Agent Framework.</div>
+                    <div class="p-3 bg-gray-50 rounded-md"><strong>Exabits:</strong> AI-ready compute, tokenized assets.</div>
+                    <div class="p-3 bg-gray-50 rounded-md"><strong>Eliza Labs:</strong> TypeScript agent framework with Web3 plugins.</div>
+                    <div class="p-3 bg-gray-50 rounded-md"><strong>Arc:</strong> Rust-based modular agent framework.</div>
+                    <div class="p-3 bg-gray-50 rounded-md"><strong>MotherDAO:</strong> AI Agent Marketplace.</div>
+                    <div class="p-3 bg-gray-50 rounded-md"><strong>Frax Finance:</strong> AIVM L2 for AI agents.</div>
+                    <div class="p-3 bg-gray-50 rounded-md"><strong>Fetch.ai, Bitte, SWEAT, HOT:</strong> Other key partners.</div>
+                </div>
+                 <div id="detail-oaa" class="detailed-content">
+                    <p>The Open Agents Alliance (OAA), initiated by NEAR AI, unites projects like Coinbase, Phala Network, Aethir, Akash, Hyperbolic, Exabits, Eliza Labs, Arc, MotherDAO, and Frax Finance. Its mission is to provide an end-to-end stack for DeAI development, combining frameworks, hosting, TEEs, and on/off-ramps. OAA emphasizes open-source principles, user privacy, economic inclusivity, and aims to make advanced AI accessible and fair. This collaborative effort is crucial for building a unified and interoperable DeAI ecosystem.</p>
+                </div>
+                <p class="mt-4 text-center">The OAA provides an end-to-end stack for a comprehensive DeAI development environment.</p>
+            </div>
+        </section>
+
+        <section id="protocols" class="py-8 md:py-12 scroll-mt-16">
+            <h2 class="text-3xl font-bold section-title mb-8 text-center">4. Protocols for Agent Interaction</h2>
+            <p class="text-lg text-gray-700 mb-10 max-w-3xl mx-auto text-center">Standardized protocols are crucial for agent discovery, communication, and coordination in a decentralized "internet of agents."</p>
+             <div class="html-diagram">
+                <h3 class="text-xl font-semibold card-title card-title-interactive mb-4 text-center accent-blue" data-target="detail-interaction-layers">Conceptual Layers of Agent Interaction Protocols <span class="expand-button-text text-xs">[+]</span></h3>
+                <div class="space-y-2 text-sm">
+                    <div class="html-diagram-box"><strong>Application / Task Layer</strong> (Specific agent goals)</div>
+                    <div class="html-diagram-arrow">↕</div>
+                    <div class="html-diagram-box"><strong>Coordination & Collaboration</strong> (A2A, ACPs, AGORA, ANP, FIPA-ACL)</div>
+                    <div class="html-diagram-arrow">↕</div>
+                    <div class="html-diagram-box"><strong>Communication & Tooling</strong> (MCP, NLWeb, Specific API Standards)</div>
+                    <div class="html-diagram-arrow">↕</div>
+                    <div class="html-diagram-box"><strong>Discovery & Registry</strong> (ANS, Decentralized Registries - Fetch.ai Almanac, Olas Registries, AgentConnect)</div>
+                    <div class="html-diagram-arrow">↕</div>
+                    <div class="html-diagram-box"><strong>Identity & Trust</strong> (DIDs, VCs, TEEs for Attestation, W3C AI Agent Protocol CG)</div>
+                    <div class="html-diagram-arrow">↕</div>
+                    <div class="html-diagram-box"><strong>Payment & Economic</strong> (X402, NEAR AITP, Crypto Payments)</div>
+                     <div class="html-diagram-arrow">↕</div>
+                    <div class="html-diagram-box"><strong>Underlying Infrastructure</strong> (Blockchain, DePIN, Networking)</div>
+                </div>
+                <div id="detail-interaction-layers" class="detailed-content">
+                    <p>Agent interaction relies on a layered protocol stack. The W3C AI Agent Protocol Community Group is working on standards for discovery, identity (DIDs/VCs), and collaboration. Key protocols include:
+                    <br><strong>MCP (Model Context Protocol):</strong> Standardizes tool interaction for AI models.
+                    <br><strong>A2A (Agent to Agent):</strong> Google's standard for enterprise agent communication.
+                    <br><strong>ANP (Agent Network Protocol):</strong> Aims to be "HTTP for agents" with identity and meta-protocol layers.
+                    <br><strong>ACPs (Agent Collaboration Protocols):</strong> A comprehensive suite for registration, discovery, interaction, and tooling.
+                    <br><strong>AGORA:</strong> A meta-protocol for agents to negotiate communication methods.
+                    <br><strong>ANS (Agent Name Service):</strong> A PKI-based registry for agent discovery.
+                    <br>These protocols, along with decentralized registries (Fetch.ai Almanac, Olas Registries, AgentConnect) and payment layers (X402, NEAR AITP), aim to create an interoperable agentic web.</p>
+                </div>
+                <p class="mt-4 text-sm text-center text-gray-600">A functional agentic web requires interoperable protocols across these layers. Click title to expand on key protocols.</p>
+            </div>
+        </section>
+
+        <section id="frameworks" class="py-8 md:py-12 scroll-mt-16">
+            <h2 class="text-3xl font-bold section-title mb-8 text-center">5. Key AI Agent Development Frameworks</h2>
+            <p class="text-lg text-gray-700 mb-10 max-w-3xl mx-auto text-center">A rich ecosystem of frameworks is simplifying DeAI agent creation, providing tools for memory, reasoning, and multi-agent coordination. Click card titles for more details.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-coral" data-target="detail-langchain">LangChain/LangGraph <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm">Python. Modularity, LLM chaining, stateful multi-agent graphs.</p>
+                    <div id="detail-langchain" class="detailed-content"><p>LangChain offers modular components for LLM applications. LangGraph, a sub-module, enables building stateful, graph-based multi-agent workflows, suitable for complex, cyclical processes and collaborative agent systems. It's known for flexibility and a large community.</p></div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-yellow" data-target="detail-autogen">AutoGen (Microsoft) <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm">Python,.NET. Multi-agent conversations, AutoGen Studio (GUI).</p>
+                    <div id="detail-autogen" class="detailed-content"><p>AutoGen is a Microsoft-backed framework for building multi-agent AI systems. It supports customizable, "conversable" agents, human-in-the-loop scenarios, and offers AutoGen Studio for no-code prototyping. Strong for research and complex multi-agent interactions.</p></div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-green" data-target="detail-crewai">CrewAI <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm">Python. Role-based autonomous agents simulating human team dynamics.</p>
+                    <div id="detail-crewai" class="detailed-content"><p>CrewAI orchestrates role-based autonomous agents that collaborate like a human team. Agents are assigned roles, goals, and backstories, with tasks defining responsibilities. It supports sequential or hierarchical processes and integrates with various LLMs.</p></div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-blue" data-target="detail-eliza">Eliza (ai16z) <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm">TypeScript. Autonomous agents with Web3 plugins (EVM, Solana, TEEs).</p>
+                    <div id="detail-eliza" class="detailed-content"><p>Eliza is a TypeScript framework for building autonomous agents with strong Web3 integration. It features JSON-based character definition, runtime management, and a plugin system for blockchain interactions (EVM transfers, token interactions) and TEEs.</p></div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-navy" data-target="detail-agno">Agno AI <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm">Python. Declarative composition, Agentic RAG, Multi-agent "Agent Teams."</p>
+                    <div id="detail-agno" class="detailed-content"><p>Agno AI is a Python framework for clean, composable agentic applications. It offers declarative agent construction, "Agentic RAG" for knowledge retrieval, transparent reasoning, and a multi-agent "Agent Teams" architecture for distributing tasks among specialized agents.</p></div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-coral" data-target="detail-mastra">Mastra AI <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm">TypeScript. Vercel AI SDK, Graph-based deterministic workflows, RAG, Evals.</p>
+                    <div id="detail-mastra" class="detailed-content"><p>Mastra AI is a TypeScript framework providing primitives for agents (memory, tool-calling), deterministic graph-based workflows, RAG for knowledge integration, and Evals for quality assurance. It uses the Vercel AI SDK for model routing and supports serverless deployment.</p></div>
+                </div>
+            </div>
+            <div class="card p-6 mt-8">
+                <h3 class="text-xl font-semibold card-title mb-4 text-center accent-yellow">Illustrative Conceptual Focus of Agent Frameworks</h3>
+                <p class="text-center mb-4 text-sm">Distribution of primary strengths/features.</p>
+                <div class="chart-container mx-auto"><canvas id="frameworksFocusChart"></canvas></div>
+                <p class="mt-4 text-sm text-center">Frameworks vary in emphasis on modularity, multi-agent orchestration, Web3 integration, and developer experience for specific ecosystems.</p>
+            </div>
+        </section>
+
+        <section id="projects" class="py-8 md:py-12 scroll-mt-16">
+            <h2 class="text-3xl font-bold section-title mb-8 text-center">6. Other Key Projects Shaping the DeAI Landscape</h2>
+            <p class="text-lg text-gray-700 mb-10 max-w-3xl mx-auto text-center">Beyond core infrastructure and frameworks, projects focusing on knowledge provision, specialized datasets, and analytics are vital enablers. Click titles for details.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-green" data-target="detail-iqai">IQ AI (IQ.wiki) <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm">Provides AIDEN (blockchain knowledge agent) and Agent Tokenization Platform (ATP) for DeFAI tasks. Collaborates with Frax on AIVM.</p>
+                    <div id="detail-iqai" class="detailed-content"><p>IQ.wiki offers AIDEN, a crypto-focused AI agent for blockchain insights, powered by the IQ token. Their Agent Tokenization Platform (ATP) enables developers to create AI-driven tokenized agents for autonomous DeFi tasks. IQ.wiki is also collaborating with Frax Finance on the AIVM project for on-chain AI agents.</p></div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-blue" data-target="detail-silverstream">Silverstream AI <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm">Builds infrastructure for autonomous web agents. Released Pasta-1T dataset (web trajectories) for agent training. Backed by Google's Gradient Ventures.</p>
+                    <div id="detail-silverstream" class="detailed-content"><p>Silverstream AI focuses on infrastructure for reliable autonomous web agents. They released Pasta-1T, a large public dataset of agentic web interactions (real-world web trajectories generated by curious autonomous agents), to improve web agent training and performance. They are backed by Google's Gradient Ventures.</p></div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-2 accent-navy" data-target="detail-datrics">Datrics AI <span class="expand-button-text text-xs">[+]</span></h3>
+                    <p class="text-sm">No-code AI analyst platform for creating custom AI analysts. Provides DeFi insights for projects like Ref. Finance on NEAR.</p>
+                    <div id="detail-datrics" class="detailed-content"><p>Datrics AI offers a no-code platform to create custom AI analysts that can answer data questions via chat. It connects to various data sources and uses proprietary "Datrics Pipelines" for accurate analysis. They provide DeFi insights, including for Ref. Finance on NEAR, and support embedding solutions into team workflows.</p></div>
+                </div>
+            </div>
+            <p class="mt-6 text-center text-gray-700">These projects offer essential resources like specialized knowledge bases, training data, and analytical tools, forming a critical support layer for the DeAI ecosystem.</p>
+        </section>
+
+        <section id="challenges" class="py-8 md:py-12 scroll-mt-16">
+            <h2 class="text-3xl font-bold section-title mb-8 text-center">7. Navigating Challenges & The Path Forward</h2>
+            <p class="text-lg text-gray-700 mb-10 max-w-3xl mx-auto text-center">Realizing the DeAI vision requires overcoming technical, security, economic, and ethical hurdles. Standardization and collaboration are key. Click titles for details.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-3 accent-coral" data-target="detail-keychallenges">Key Challenges <span class="expand-button-text text-xs">[+]</span></h3>
+                    <ul class="list-disc list-inside text-sm space-y-1">
+                        <li><strong>Technical:</strong> Scalability, interoperability, persistent state, real-time performance.</li>
+                        <li><strong>Security & Trust:</strong> Novel MAS threats (collusion, swarm attacks), identity spoofing, data privacy.</li>
+                        <li><strong>Economic Models:</strong> Sustainable tokenomics beyond hype, fair value exchange.</li>
+                        <li><strong>Governance:</strong> Decentralized governance for autonomous systems, dispute resolution.</li>
+                        <li><strong>Ethical:</strong> Algorithmic bias, explainability (XAI), regulatory compliance.</li>
+                    </ul>
+                    <div id="detail-keychallenges" class="detailed-content">
+                        <p>Major hurdles include ensuring DeAI systems can scale efficiently while maintaining interoperability between diverse agent frameworks and protocols. Security in multi-agent systems is complex, with risks like collusion and data privacy breaches. Economically, sustainable token models are needed beyond initial speculation. Governance of autonomous systems and addressing ethical concerns like bias and accountability are also critical for widespread adoption and trust.</p>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold card-title card-title-interactive mb-3 accent-yellow" data-target="detail-futuretraj">Future Trajectory <span class="expand-button-text text-xs">[+]</span></h3>
+                    <ul class="list-disc list-inside text-sm space-y-1">
+                        <li>Hyper-personalization & proactive assistance.</li>
+                        <li>Self-improving autonomous systems (e.g., Hyperbolic AgentKit, Olas Mech).</li>
+                        <li>"Internet of Agents" with emergent collective intelligence.</li>
+                        <li>AI-Native Financial Institutions (e.g., Catena Labs, AIsa).</li>
+                        <li>Transformative impact on DeFi, gaming, data markets, enterprise automation.</li>
+                        <li>Emphasis on user ownership and control (core to OAA).</li>
+                    </ul>
+                    <div id="detail-futuretraj" class="detailed-content">
+                        <p>The future points towards highly personalized and proactive AI agents. Systems will likely become self-improving, as seen with Hyperbolic's AgentKit and Olas Mech. An "Internet of Agents" enabling emergent collective intelligence is envisioned. Specialized AI-Native Financial Institutions like Catena Labs and AIsa will cater to the agent economy. DeAI will transform industries from DeFi to gaming, with a strong emphasis on user ownership and control, a central tenet of the Open Agents Alliance.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-10 text-center max-w-3xl mx-auto">
+                <p class="text-lg font-semibold accent-navy">Strategic priorities include embracing open standards, focusing on security by design, developing sustainable economic models, and fostering collaborative research to realize a user-owned, intelligent internet.</p>
+            </div>
+        </section>
+
+        <footer class="text-center py-8 mt-12 border-t border-gray-300">
+            <p class="text-sm text-gray-600">&copy; 2025 Decentralized AI Agent Research. Infographic based on the Agentic Web Research Expansion Report.</p>
+            <p class="text-xs text-gray-500 mt-1">Data in charts is illustrative and synthesized for explanatory purposes from qualitative report themes.</p>
+        </footer>
+    </div>
+
+    <script>
+        const PALETTE = {
+            coral: '#FF6B6B',
+            yellow: '#FFD166',
+            green: '#06D6A0',
+            blue: '#118AB2',
+            navy: '#073B4C',
+            textDark: '#3D3B30'
+        };
+
+        function wrapLabels(labels, maxWidth = 16) {
+            return labels.map(label => {
+                if (typeof label === 'string' && label.length > maxWidth) {
+                    const words = label.split(' ');
+                    let lines = [];
+                    let currentLine = '';
+                    words.forEach(word => {
+                        if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                            lines.push(currentLine.trim());
+                            currentLine = word + ' ';
+                        } else {
+                            currentLine += word + ' ';
+                        }
+                    });
+                    lines.push(currentLine.trim());
+                    return lines;
+                }
+                return label;
+            });
+        }
+
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            return Array.isArray(label) ? label.join(' ') : label;
+                        }
+                    }
+                },
+                legend: { labels: { color: PALETTE.textDark } }
+            },
+            scales: {
+                x: { ticks: { color: PALETTE.textDark, font: {size: 10} }, grid: { color: 'rgba(0,0,0,0.05)' } },
+                y: { ticks: { color: PALETTE.textDark, font: {size: 10} }, grid: { color: 'rgba(0,0,0,0.05)' } }
+            }
+        };
+
+        const depinFocusCtx = document.getElementById('depinFocusChart')?.getContext('2d');
+        if (depinFocusCtx) {
+            new Chart(depinFocusCtx, {
+                type: 'bar',
+                data: {
+                    labels: wrapLabels(['Aethir', 'Akash Network', 'Exabits', 'Hyperbolic']),
+                    datasets: [
+                        { label: 'GPU Supply Focus', data: [8, 6, 7, 6.5], backgroundColor: PALETTE.coral },
+                        { label: 'Cost Efficiency Focus', data: [6, 8.5, 7.5, 7], backgroundColor: PALETTE.yellow },
+                        { label: 'TEE/Confidentiality Focus', data: [5, 7, 6, 4], backgroundColor: PALETTE.green }
+                    ]
+                },
+                options: { ...commonChartOptions, indexAxis: 'y', scales: { ...commonChartOptions.scales, x: {...commonChartOptions.scales.x, title: {display: true, text: 'Relative Conceptual Focus (Illustrative)'}}}}
+            });
+        }
+
+        const frameworksFocusCtx = document.getElementById('frameworksFocusChart')?.getContext('2d');
+        if (frameworksFocusCtx) {
+            new Chart(frameworksFocusCtx, {
+                type: 'pie',
+                data: {
+                    labels: wrapLabels(['LangChain (Modularity)', 'AutoGen (Multi-Agent)', 'CrewAI (Role-Based)', 'Eliza (Web3 Focus)', 'Agno/Mastra (DevX/Specialized)']),
+                    datasets: [{
+                        label: 'Conceptual Framework Strengths',
+                        data: [30, 25, 20, 15, 10], 
+                        backgroundColor: [PALETTE.coral, PALETTE.yellow, PALETTE.green, PALETTE.blue, PALETTE.navy],
+                        hoverOffset: 4
+                    }]
+                },
+                options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, legend: { position: 'bottom' } } }
+            });
+        }
+        
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinksDesktop = document.querySelectorAll('#nav-links-desktop a');
+        const navLinksMobile = document.querySelectorAll('#nav-links-mobile a');
+        const sections = document.querySelectorAll('section[id]');
+
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+                mobileMenuButton.setAttribute('aria-expanded', !expanded);
+                mobileMenu.classList.toggle('hidden');
+                mobileMenuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
+            });
+        }
+
+        function updateActiveLink() {
+            let currentSectionId = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - (document.getElementById('main-nav')?.offsetHeight || 0) - 20) { 
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            [...navLinksDesktop, ...navLinksMobile].forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        [...navLinksDesktop, ...navLinksMobile].forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenuButton.click(); 
+                }
+            });
+        });
+
+        window.addEventListener('scroll', updateActiveLink);
+        document.addEventListener('DOMContentLoaded', () => {
+            updateActiveLink();
+
+            document.querySelectorAll('.card-title-interactive').forEach(titleElement => {
+                titleElement.addEventListener('click', () => {
+                    const targetId = titleElement.dataset.target;
+                    const detailElement = document.getElementById(targetId);
+                    const expandTextElement = titleElement.querySelector('.expand-button-text');
+
+                    if (detailElement) {
+                        detailElement.classList.toggle('open');
+                        if (expandTextElement) {
+                            expandTextElement.textContent = detailElement.classList.contains('open') ? '[-] ' : '[+]';
+                        }
+                    }
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>
